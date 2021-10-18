@@ -14,7 +14,7 @@ public with sharing class Grid
         get { return x; }
         set 
         { 
-            x = Grid.constrainOordinate(value);
+            x = Grid.constrainOrdinate(value);
         }
     }
 
@@ -24,7 +24,7 @@ public with sharing class Grid
         get { return y; }
         set 
         { 
-            y = Grid.constrainOordinate(value);
+            y = Grid.constrainOrdinate(value);
         }
     }
 
@@ -91,7 +91,7 @@ public with sharing class Grid
     }
 
     // method to constrain the supplied ordinate within the grid of size GRID_SIZE
-    private static Integer constrainOordinate(Integer ordinate)
+    private static Integer constrainOrdinate(Integer ordinate)
     {
         if (ordinate < 0) 
         {
