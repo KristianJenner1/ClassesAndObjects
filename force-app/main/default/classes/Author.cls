@@ -3,19 +3,42 @@
 */
 public with sharing class Author 
 {
-    public final String firstName;
-    public final String lastName;
-    public final String emailAddress;
+    // constants
+    public static final String PUBLISHED_STATUS = 'Published';
+
+    public String firstName
+    {
+        get { return firstName; }
+        set 
+        { 
+            if (null != firstName) 
+            {
+                firstName = value;
+            }
+        }
+    }
+    public String lastName
+    {
+        get { return lastName; }
+        set 
+        { 
+            if (null != lastName) 
+            {
+                lastName = value;
+            }
+        }
+    }
+    public String emailAddress;
     public Map<String,Book> draftBooksbyTitle;
     public Map<Date,List<Book>> publishedBooksbyDate;
 
     public Author(String firstName, String lastName, String emailAddress)
     {
-        This.firstName = firstName;
-        This.lastName = lastName;
-        This.emailAddress = emailAddress;
-        This.draftBooksbyTitle = new Map<String,Book>();
-        This.publishedBooksbyDate = new Map<Date,List<Book>>();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.draftBooksbyTitle = new Map<String,Book>();
+        this.publishedBooksbyDate = new Map<Date,List<Book>>();
     }
 
     // publish a book based on its title, locates and removes the book from the 
@@ -23,28 +46,28 @@ public with sharing class Author
     // the published collection, using it’s published date as the key
     public void publishBook(String title)
     {
-        for (Book b : This.draftBooksbyTitle.values())
+        Book draftBook = this.draftBooksByTitle.get(title);
+       
+        if (null != draftBook)
         {
-            if (b.title == title)
+            // publish the book
+            draftBook.publish();
+
+            // remove the book from the Author's drafts
+            draftBooksbyTitle.remove(title);
+
+            // add the book to the author's published books
+            List<Book> publishedBooksOnDate = publishedBooksbyDate.get(draftBook.publishedDate);
+            if (null == publishedBooksOnDate)
             {
-                // publish the book
-                b.publish();
-
-                // remove the book from the Author's drafts
-                draftBooksbyTitle.remove(title);
-
-                // add the book to the author's published books
-                List<Book> publishedBooksOnDate = publishedBooksbyDate.get(b.publishedDate);
-                if (null == publishedBooksOnDate)
-                {
-                    publishedBooksbyDate.put(b.publishedDate,new List<Book>{b});
-                }
-                else
-                {
-                    publishedBooksOnDate.add(b);
-                }
+                publishedBooksbyDate.put(draftBook.publishedDate,new List<Book>{draftBook});
+            }
+            else
+            {
+                publishedBooksOnDate.add(draftBook);
             }
         }
+
     }
 
     // inner class for book
@@ -55,7 +78,7 @@ public with sharing class Author
             get { return title; }
             set 
             { 
-                if (This.status != 'Published') 
+                if (this.status != 'Published') 
                 {
                     title = value;
                 } 
@@ -66,7 +89,7 @@ public with sharing class Author
             get { return numberOfPages; }
             set 
             { 
-                if (This.status != 'Published') 
+                if (this.isPublished()) 
                 {
                     numberOfPages = value;
                 } 
@@ -77,7 +100,7 @@ public with sharing class Author
             get { return genre; }
             set 
             { 
-                if (This.status != 'Published') 
+                if (this.isPublished()) 
                 {
                     genre = value;
                 } 
@@ -88,20 +111,32 @@ public with sharing class Author
 
         public Book(Author author, String title, Integer numberOfPages, String genre)
         {
-            This.title = title;
-            This.numberOfPages = numberOfPages;
-            This.genre = genre;
-            This.status = 'Draft';
+            this.title = title;
+            this.numberOfPages = numberOfPages;
+            this.genre = genre;
+            this.status = 'Draft';
             // add the book to the author's drafts
-            author.draftBooksbyTitle.put(This.title,This);
+            author.draftBooksbyTitle.put(this.title,this);
         }
 
         // invoking this method changes the state to Published and sets the published 
         // date to today’s date
         public void publish()
         {
-            This.status = 'published';
-            This.publishedDate = Date.Today();
+            this.status = PUBLISHED_STATUS;
+            this.publishedDate = Date.Today();
+        }
+
+        public boolean isPublished()
+        {
+            boolean published = false;
+            
+            if(this.status == PUBLISHED_STATUS)
+            {
+                published = true;
+            }
+
+            return published;
         }
 
     }

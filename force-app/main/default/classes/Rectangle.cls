@@ -5,19 +5,15 @@
 */
 public with sharing class Rectangle 
 {
-    public final Decimal height;
-    public final Decimal width;
-    public final Decimal surfaceArea;
-    public final Boolean isSquare;
+    public Decimal height;
+    public Decimal width;
   
     public Rectangle(Decimal height, Decimal width) 
     {
         if (height > 0 && width > 0)
         {
-            This.height = height;
-            This.width = width;
-            This.surfaceArea = This.calculateSurfaceArea();
-            This.isSquare = This.isSquare();
+            this.height = height;
+            this.width = width;
         }
         else 
         {
@@ -27,7 +23,7 @@ public with sharing class Rectangle
 
     private Decimal calculateSurfaceArea()
     {   
-        Decimal area = This.height * This.width;
+        Decimal area = this.height * this.width;
         return area;
     }
 
@@ -35,7 +31,7 @@ public with sharing class Rectangle
     {
         Boolean square = false;
 
-        if (This.height == This.width)
+        if (this.height == this.width)
         {
             square = true;
         }
