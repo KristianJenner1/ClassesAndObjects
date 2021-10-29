@@ -3,6 +3,10 @@
 * It is be possible to construct a circle by providing either it’s radius 
 * or a string representation of its diameter
 */
+
+
+/* added this line */
+
 public with sharing class Circle 
 {
     private Static final Decimal PI = 3.14159; // PI to 5dp
