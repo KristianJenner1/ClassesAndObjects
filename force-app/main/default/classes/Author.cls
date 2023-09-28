@@ -6,6 +6,7 @@ public with sharing class Author
     // constants
     public static final String PUBLISHED_STATUS = 'Published';
 
+    // properties
     public String firstName
     {
         get { return firstName; }
@@ -17,6 +18,7 @@ public with sharing class Author
             }
         }
     }
+
     public String lastName
     {
         get { return lastName; }
@@ -28,10 +30,13 @@ public with sharing class Author
             }
         }
     }
+
+    // instance variables
     public String emailAddress;
     public Map<String,Book> draftBooksbyTitle;
     public Map<Date,List<Book>> publishedBooksbyDate;
 
+    // constructor
     public Author(String firstName, String lastName, String emailAddress)
     {
         this.firstName = firstName;
@@ -73,6 +78,7 @@ public with sharing class Author
     // inner class for book
     public class Book
     {
+        // properties
         public String title
         {
             get { return title; }
@@ -84,6 +90,7 @@ public with sharing class Author
                 } 
             }
         }
+
         public Integer numberOfPages
         {
             get { return numberOfPages; }
@@ -95,6 +102,7 @@ public with sharing class Author
                 } 
             }
         }
+
         public String genre
         {
             get { return genre; }
@@ -106,9 +114,12 @@ public with sharing class Author
                 } 
             }
         }
+
+        // instance variables
         public String status;
         public Date publishedDate;
 
+        // constructor
         public Book(Author author, String title, Integer numberOfPages, String genre)
         {
             this.title = title;
@@ -127,6 +138,7 @@ public with sharing class Author
             this.publishedDate = Date.Today();
         }
 
+        // method returns true if the book is published
         public boolean isPublished()
         {
             boolean published = false;

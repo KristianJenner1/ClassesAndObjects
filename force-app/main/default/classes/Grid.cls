@@ -8,6 +8,7 @@ public with sharing class Grid
     // constants
     public static final Integer GRID_SIZE = 5; // size of the square grid
 
+    // properties
     // holds the x coordinate within the grid
     public Integer x
     {
